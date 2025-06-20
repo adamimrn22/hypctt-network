@@ -1,0 +1,23 @@
+version: "3.8"
+
+networks:
+  hypcttnetwork:
+    driver: bridge
+
+services:
+  ca-peer-org1:
+    hostname: ca-peer-org1.hypctt.com
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-peer-org1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7031
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../../fabric-ca/peerOrg/hypctt.com/org1:/etc/hyperledger/fabric-ca-server
+    container_name: ca-peer-org1
+    ports:
+      - "7031:7031"
+    networks:
+      - hypcttnetwork

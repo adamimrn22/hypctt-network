@@ -1,0 +1,23 @@
+version: "3.8"
+
+networks:
+  hypcttnetwork:
+    driver: bridge
+
+services:
+  ca-orderer:
+    hostname: ca-orderer.hypctt.com
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7030
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../../fabric-ca/ordererOrg/hypctt.com:/etc/hyperledger/fabric-ca-server
+    container_name: ca-orderer
+    ports:
+      - "7030:7030"
+    networks:
+      - hypcttnetwork
